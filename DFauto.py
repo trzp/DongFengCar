@@ -5,7 +5,7 @@
 # Contact: mrtang@nudt.edu.cn
 # Github: trzp
 # Last Modified by:   mr tang
-# Last Modified time: 2018-09-28 17:21:32
+# Last Modified time: 2018-09-28 17:34:59
 
 # note: this script matches the protocol of DongFen auto car
 #      protocol is provided by Pro. Liu
@@ -56,7 +56,6 @@ class ElectricDevice:
                         dtype=np.uint32).tostring()[::-1]  # 注意编码字节顺序
         ch = np.array([sum(np.fromstring(buf, dtype=np.uint8))],
                       dtype=np.uint8).tostring()
-        buf += ch
         return buf
 
 
@@ -82,6 +81,9 @@ class Driver:
         buf += pack('i', self.steering_vel)[:2]
         buf += pack('B', self.brake)
         buf += pack('>f', self.deceleration)
+        ch = np.array([sum(np.fromstring(buf, dtype=np.uint8))],
+                      dtype=np.uint8).tostring()
+        buf += ch
         return buf
 
 
