@@ -5,7 +5,7 @@
 # Contact: mrtang@nudt.edu.cn 
 # Github: trzp
 # Last Modified by:   mr tang
-# Last Modified time: 2018-09-28 17:12:51
+# Last Modified time: 2018-09-29 17:04:26
 
 import socket
 
@@ -13,4 +13,4 @@ s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 s.bind(('127.0.0.1',9000))
 while True:
     data,addr = s.recvfrom(128)
-    print data
+    print data.encode('hex')

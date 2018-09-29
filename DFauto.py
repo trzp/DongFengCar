@@ -5,7 +5,7 @@
 # Contact: mrtang@nudt.edu.cn
 # Github: trzp
 # Last Modified by:   mr tang
-# Last Modified time: 2018-09-28 17:34:59
+# Last Modified time: 2018-09-29 19:06:49
 
 # note: this script matches the protocol of DongFen auto car
 #      protocol is provided by Pro. Liu
@@ -41,7 +41,6 @@ class ElectricDevice:
         self.status = 0
         self.longitude = 0
         self.latitude = 0
-        self._ch = 0
 
     def tobuf(self):
         buf = np.array([130], dtype=np.uint8).tostring()
@@ -56,6 +55,7 @@ class ElectricDevice:
                         dtype=np.uint32).tostring()[::-1]  # 注意编码字节顺序
         ch = np.array([sum(np.fromstring(buf, dtype=np.uint8))],
                       dtype=np.uint8).tostring()
+        buf += ch
         return buf
 
 
@@ -100,6 +100,11 @@ class DFAuto:
         self.s.sendto(buf1,self.addr)
         time.sleep(0.01)
         self.s.sendto(buf2,self.addr)
+        
+        k1 = ' '.join([hex(item) for item in np.fromstring(buf1,dtype=np.uint8)])
+        k2 = ' '.join([hex(item) for item in np.fromstring(buf2,dtype=np.uint8)])
+        return {'device':k1,'driver':k2}
+
 
 class DFauto2(threading.Thread,DFAuto):
     def __init__(self,ip,port):
